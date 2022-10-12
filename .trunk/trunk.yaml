@@ -1,0 +1,27 @@
+version: 0.1
+actions:
+  enabled:
+    - trunk-cache-prune
+    - trunk-upgrade-available
+runtimes:
+  enabled:
+    - go@1.18.3
+    - node@16.14.2
+lint:
+  compile_commands: json
+  disabled:
+    - include-what-you-use
+    - prettier
+  enabled:
+    - clang-format@14.0.0
+    - clang-tidy@14.0.0
+    - git-diff-check
+    - gitleaks@8.13.0
+
+cli:
+  version: 0.18.1-beta
+plugins:
+  sources:
+    - id: trunk
+      ref: v0.0.5
+      uri: https://github.com/trunk-io/plugins

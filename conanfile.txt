@@ -1,0 +1,8 @@
+[requires]
+fmt/9.1.0
+
+[options]
+fmt:shared=True
+
+[generators]
+cmake_find_package
