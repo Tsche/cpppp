@@ -1,1 +1,1 @@
-target_sources(cppp PRIVATE main.cpp parser.cpp interpreter.cpp)
+target_sources(cpppp PRIVATE main.cpp)

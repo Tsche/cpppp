@@ -14,5 +14,5 @@ AllowShortBlocksOnASingleLine: true
 
 IndentPPDirectives: BeforeHash
 AlignAfterOpenBracket: Align
-#BinPackArguments: false
-#BinPackParameters: false
+BinPackArguments: false
+BinPackParameters: false
