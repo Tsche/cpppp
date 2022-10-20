@@ -53,9 +53,9 @@ valid_token ::= introducer ( define | include | inline | bracketed | shorthand |
 
 define   ::= "define" whitespace (function | global);
 function ::= identifier '(' { any } ')' { any } '{' { any } '}';
-global   ::= identifier whitespace+ any { any } newline;
+global   ::= identifier whitespace { whitespace } any { any } newline;
 
-include          ::= "include" whitespace+ ( relative_include | system_include ) newline;
+include          ::= "include" whitespace { whitespace } ( relative_include | system_include ) newline;
 relative_include ::= '"' any { any } '"';
 system_include   ::= '<' any { any } '>';
 
