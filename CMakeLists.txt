@@ -14,7 +14,7 @@ find_package(fmt)
 
 # Library
 add_library(cpppp_lib STATIC "")
-add_subdirectory(lib)
+add_subdirectory(src)
 target_link_libraries(cpppp_lib PUBLIC fmt::fmt)
 target_link_libraries(cpppp_lib PUBLIC LLVM clang-cpp)
 
@@ -35,8 +35,7 @@ endif()
 
 
 # Application
-add_executable(cpppp "")
-add_subdirectory(src)
+add_executable(cpppp main.cpp)
 target_link_libraries(cpppp PRIVATE cpppp_lib)
 
 # Version preprocessor definitions

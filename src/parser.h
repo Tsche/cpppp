@@ -20,8 +20,8 @@ public:
       : input(std::move(input)),
         interpreter(interpreter) {}
 
-  void parse();
-  void evaluate(llvm::raw_ostream& output = llvm::outs());
+  void parse(bool print_parsed = false);
+  void evaluate(llvm::raw_ostream& output = llvm::outs(), bool print_program = false);
 
 private:
   std::unique_ptr<llvm::MemoryBuffer> input;

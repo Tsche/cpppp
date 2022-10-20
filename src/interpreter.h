@@ -5,9 +5,6 @@
 #include <llvm/ExecutionEngine/JITSymbol.h>
 #include <clang/AST/GlobalDecl.h>
 
-#include <llvm/Support/raw_ostream.h>
-#include <unordered_map>
-
 #include "codegen.h"
 
 class Interpreter {

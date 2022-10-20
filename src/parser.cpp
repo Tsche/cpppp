@@ -64,7 +64,7 @@ auto Parser::extract(Token& token)
   return fnc(token);
 }
 
-void Parser::parse() {
+void Parser::parse(bool print_parsed) {
   auto code = Token(input->getBuffer()).find("@");
 
   if (!code) {
@@ -81,7 +81,8 @@ void Parser::parse() {
   for (auto token = code.split(1); token.has_value();) {
     auto [lexeme, prelude] = extract(*token);
 
-    lexeme->print();
+    if (print_parsed)
+      lexeme->print();
 
     if (auto unevaluated = lexeme->generate(codegen); unevaluated) {
       // unevaluated tag -> evaluate later
@@ -111,7 +112,10 @@ void Parser::parse() {
   }
 }
 
-void Parser::evaluate(llvm::raw_ostream& output) {
+void Parser::evaluate(llvm::raw_ostream& output, bool print_program) {
+  if (print_program)
+    llvm::errs() << codegen.output << '\n';
+
   interpreter.run(codegen);
 
   for (auto&& chunk : outputs) {

@@ -13,7 +13,7 @@ struct CodeGen {
   std::string output = R"(
 #include <string>
 #include <sstream>
-  )";
+)";
 
   llvm::raw_string_ostream stream{output};
 };

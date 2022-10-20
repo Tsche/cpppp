@@ -17,7 +17,8 @@ std::string {}{}(){{
   std::ostringstream stream;
   stream << [](){}();
   return stream.str();
-}})",
+}}
+)",
                              code.prefix,
                              i,
                              block);
@@ -31,11 +32,11 @@ Code::UnevaluatedID Include::generate(CodeGen& code) {
 
 
 Code::UnevaluatedID Global::generate(CodeGen& code) {
-  code.stream << fmt::format("auto {} = {};", name, expression);
+  code.stream << fmt::format("auto {} = {};\n", name, expression);
   return {};
 }
 
 Code::UnevaluatedID Function::generate(CodeGen& code) {
-  code.stream << fmt::format("auto {}{}", name, block);
+  code.stream << fmt::format("auto {}{}\n", name, block);
   return {};
 }

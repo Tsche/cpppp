@@ -44,9 +44,22 @@ int main(int argc, char const* argv[]) {
                                llvm::cl::desc("Alias for --output"),
                                llvm::cl::aliasopt(output));
 
-  llvm::cl::list<std::string> inputs(llvm::cl::Positional,
-                                     llvm::cl::desc("[<file> ...]"),
-                                     llvm::cl::cat(category));
+  llvm::cl::opt<bool> print_parsed(
+      "print-parsed",
+      llvm::cl::desc(
+          "Output the parsing result to stderr. Useful for debugging."),
+      llvm::cl::cat(category));
+
+  llvm::cl::opt<bool> print_program(
+      "print-program",
+      llvm::cl::desc(
+          "Prints the generated program. Useful for debugging."),
+      llvm::cl::cat(category));
+
+  llvm::cl::opt<std::string> input(llvm::cl::Positional,
+                                   llvm::cl::desc("<file>"),
+                                   llvm::cl::init("-"),
+                                   llvm::cl::cat(category));
 
   // Parse command line options
   llvm::cl::HideUnrelatedOptions(category);
@@ -63,27 +76,19 @@ int main(int argc, char const* argv[]) {
       fmt::format("-resource-dir={}",
                   clang::driver::Driver::GetResourcesPath("/bin/clang"));
 
-  std::vector<const char*> clang_args{"-std=c++20", resc.c_str()
-  };
-
-  if (inputs.empty()) {
-    llvm::errs() << "No inputs given\n";
-    return EX_NOINPUT;
-  }
-
+  std::vector<const char*> clang_args{"-std=c++20", resc.c_str()};
   Interpreter interpreter{clang_args};
 
-  for (auto& input : inputs) {
-    auto in = llvm::MemoryBuffer::getFileOrSTDIN(input);
-    if (std::error_code error = in.getError()) {
-      llvm::errs() << error.message() << '\n';
-      return error.value();
-    }
-    llvm::raw_ostream& out = get_stream(output);
-    Parser parser(std::move(*in), interpreter);
-    parser.parse();
-    parser.evaluate();
+  auto in = llvm::MemoryBuffer::getFileOrSTDIN(input);
+  if (std::error_code error = in.getError()) {
+    llvm::errs() << error.message() << '\n';
+    return error.value();
   }
+
+  llvm::raw_ostream& out = get_stream(output);
+  Parser parser(std::move(*in), interpreter);
+  parser.parse(print_parsed);
+  parser.evaluate(out, print_program);
 
   return EX_OK;
 }

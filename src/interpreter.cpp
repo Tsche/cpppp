@@ -1,22 +1,18 @@
 #include "interpreter.h"
 
-#include <clang/Frontend/CompilerInstance.h>
+#include <charconv>
+#include <string>
 
+#include <clang/AST/Decl.h>
+#include <clang/AST/Mangle.h>
 #include <clang/Basic/Diagnostic.h>
+#include <clang/Frontend/CompilerInstance.h>
 #include <clang/Frontend/FrontendDiagnostic.h>
 
 #include <llvm/Support/DynamicLibrary.h>  // LoadLibraryPermanently
 #include <llvm/Support/Error.h>           // cantFail
 #include <llvm/Support/Signals.h>         // RunInterruptHandlers
 #include <llvm/Support/TargetSelect.h>    // llvm::Initialize*
-
-#include <fmt/core.h>
-#include <string>
-
-#include <clang/AST/Decl.h>
-#include <clang/AST/Mangle.h>
-
-#include <charconv>
 
 Interpreter::Interpreter(std::vector<const char*>& args) {
   auto compiler =
@@ -27,11 +23,6 @@ Interpreter::Interpreter(std::vector<const char*>& args) {
       static_cast<void*>(&compiler->getDiagnostics()));
   compiler->LoadRequestedPlugins();
   interpreter = llvm::cantFail(clang::Interpreter::create(std::move(compiler)));
-
-  /*push(R"(
-#include <string>
-#include <sstream>
-)");*/
 }
 
 Interpreter::~Interpreter() {
