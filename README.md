@@ -68,7 +68,7 @@ simple_expression ::= identifier;
 function_call     ::= identifier "(" { any } ")";
 
 
-identifier          ::= identifier_start identifier_continue*;
+identifier          ::= identifier_start { identifier_continue };
 identifier_continue ::= identifier_start | numeric;
 identifier_start    ::= alphanumeric | '_';
 
